@@ -7,6 +7,8 @@ import { RepositoryController } from './repository/controllers/repository.contro
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RepositoryEntity } from '../databases/entities/repository.entity';
 import { CommitEntity } from '../databases/entities/commit.entity';
+import { RepositoryChangeEvent } from './repository/events/repository.event';
+import { RepositorySubscriber } from './repository/subscribers/repository.subscriber';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RepositoryEntity, CommitEntity])],
@@ -16,6 +18,8 @@ import { CommitEntity } from '../databases/entities/commit.entity';
     RelationalRepository,
     MongoDBRepository,
     RepositoryFactory,
+    RepositoryChangeEvent,
+    RepositorySubscriber,
   ],
   exports: [],
 })
