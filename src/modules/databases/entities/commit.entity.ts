@@ -8,10 +8,10 @@ import {
   type Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Repository } from './repository.entity';
+import { RepositoryEntity } from './repository.entity';
 
 @Entity('commits')
-export class Commit {
+export class CommitEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -36,7 +36,7 @@ export class Commit {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => Repository, (repository) => repository.commits)
+  @ManyToOne(() => RepositoryEntity, (repository) => repository.commits)
   @JoinColumn({ name: 'repository_id' })
-  repository: Relation<Repository>;
+  repository: Relation<RepositoryEntity>;
 }

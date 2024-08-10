@@ -7,10 +7,10 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Commit } from './commit.entity';
+import { CommitEntity } from './commit.entity';
 
 @Entity('repositories')
-export class Repository {
+export class RepositoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -44,6 +44,6 @@ export class Repository {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToMany(() => Commit, (commit) => commit.repository)
-  commits: Relation<Commit[]>;
+  @OneToMany(() => CommitEntity, (commit) => commit.repository)
+  commits: Relation<CommitEntity[]>;
 }
