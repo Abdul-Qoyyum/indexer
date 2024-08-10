@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RepositoryInterface } from '../interfaces';
 
 @Injectable()
-export class RelationalGithubRepository implements RepositoryInterface {
+export class RelationalRepository implements RepositoryInterface {
   constructor(
     @InjectRepository(RepositoryEntity)
     private readonly githubRepository: Repository<RepositoryEntity>,
@@ -23,16 +23,18 @@ export class RelationalGithubRepository implements RepositoryInterface {
   }
 
   async save(
-    data: RepositoryEntity,
+    data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {
-    return manager
-      ? await manager.create(RepositoryEntity, data)
-      : await this.githubRepository.save(data);
+    if (manager) {
+      const user = await manager.create(RepositoryEntity, data);
+      return await manager.save(user);
+    }
+    return await this.githubRepository.save(data);
   }
 
   async update(
-    id: number | FindOperator<number>,
+    id: string | FindOperator<string>,
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {

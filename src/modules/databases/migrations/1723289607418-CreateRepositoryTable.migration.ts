@@ -10,42 +10,50 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment',
+            generationStrategy: 'uuid',
           },
           {
             name: 'name',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'description',
             type: 'text',
+            isNullable: true,
           },
           {
             name: 'url',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'language',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'forks_count',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'stargazers_count',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'open_issues_count',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'watchers_count',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',

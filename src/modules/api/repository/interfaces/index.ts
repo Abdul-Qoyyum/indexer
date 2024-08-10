@@ -4,11 +4,11 @@ import { EntityManager, FindOperator, FindOptionsWhere } from 'typeorm';
 export interface RepositoryInterface {
   findOne(data: FindOptionsWhere<RepositoryEntity>): Promise<RepositoryEntity>;
   save(
-    data: RepositoryEntity,
+    data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>>;
   update(
-    id: number | FindOperator<number>,
+    id: string | FindOperator<string>,
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>>;

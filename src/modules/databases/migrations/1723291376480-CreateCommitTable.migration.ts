@@ -15,40 +15,34 @@ export class CreateCommitTable1723291376480 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment',
+            generationStrategy: 'uuid',
           },
           {
             name: 'message',
             type: 'text',
+            isNullable: true,
           },
           {
             name: 'author',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'date',
             type: 'timestamp',
+            isNullable: true,
           },
           {
             name: 'url',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'repository_id',
-            type: 'int',
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
+            type: 'uuid',
           },
         ],
       }),

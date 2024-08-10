@@ -1,42 +1,43 @@
 import {
+  BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   type Relation,
-  UpdateDateColumn,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import { RepositoryEntity } from './repository.entity';
 
 @Entity('commits')
 export class CommitEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'text', nullable: true })
   message?: string;
 
-  @Column({ type: 'varchar' })
-  author: string;
+  @Column({ type: 'varchar', nullable: true })
+  author?: string;
 
-  @Column({ type: 'date' })
-  date: string;
+  @Column({ type: 'date', nullable: true })
+  date?: string;
 
-  @Column({ type: 'varchar' })
-  url: string;
+  @Column({ type: 'varchar', nullable: true })
+  url?: string;
 
-  @Column({ type: 'bigint', nullable: true })
-  repository_id: number;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
+  @Column({ type: 'varchar', nullable: true })
+  repository_id?: string;
 
   @ManyToOne(() => RepositoryEntity, (repository) => repository.commits)
   @JoinColumn({ name: 'repository_id' })
   repository: Relation<RepositoryEntity>;
+
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) {
+      this.id = uuidv4();
+    }
+  }
 }
