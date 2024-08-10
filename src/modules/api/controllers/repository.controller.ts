@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { RepositoryService } from '../services/repository.service';
 import { IndexRepositoryDto } from '../dtos';
 import { DataSource } from 'typeorm';
-import { CoreController } from '../../core.controller';
+import { CoreController } from '../core.controller';
 
 @Controller('repository')
 @ApiTags('repository')
