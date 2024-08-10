@@ -47,7 +47,7 @@ export class RelationalRepository implements RepositoryInterface {
     Object.assign(repository, data);
 
     return manager
-      ? manager.save(repository)
+      ? await manager.save(repository)
       : await this.githubRepository.save(repository);
   }
 

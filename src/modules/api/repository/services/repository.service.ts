@@ -43,8 +43,6 @@ export class RepositoryService {
       updated_at,
     } = gitHubRepository;
 
-    const repository = await this.repositoryFactory.getRepository();
-
     const details: Partial<RepositoryEntity> = {
       name,
       description,
@@ -57,18 +55,10 @@ export class RepositoryService {
       created_at,
       updated_at,
     };
-
-    const entity = await repository.findOne({ name });
-
-    console.log('entity');
-    console.log(entity);
-
+    const entity = await this.repositoryFactory.findOne({ name });
     if (entity) {
       details.id = entity.id;
     }
-
-    const response = await repository.save(details, manager);
-
-    return response;
+    return await this.repositoryFactory.save(details, manager);
   }
 }

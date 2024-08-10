@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { MongoDBRepository } from '../repositories/mongodb-repository.repository';
 import { MONGODB, MYSQL, POSTGRES } from 'src/modules/libs/constants';
 import { RelationalRepository } from '../repositories/relational-repository.repository';
+import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
+import { EntityManager, FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class RepositoryFactory {
@@ -34,5 +36,18 @@ export class RepositoryFactory {
 
   getRepository() {
     return this.repository;
+  }
+
+  findOne(
+    data: FindOptionsWhere<RepositoryEntity>,
+  ): Promise<Partial<RepositoryEntity>> {
+    return this.repository.findOne(data);
+  }
+
+  save(
+    data: Partial<RepositoryEntity>,
+    manager: EntityManager | null,
+  ): Promise<Partial<RepositoryEntity>> {
+    return this.repository.save(data, manager);
   }
 }
