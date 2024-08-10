@@ -20,7 +20,7 @@ switch (type) {
       username: configService.get<string>('DB_USERNAME'),
       password: configService.get<string>('DB_PASSWORD'),
       database: configService.get<string>('DB_DATABASE'),
-      entities: ['dist/**/*.entity.js'],
+      entities: ['../**/*.entity.js'],
       useUnifiedTopology: true,
     });
     break;
@@ -32,8 +32,8 @@ switch (type) {
       username: configService.get<string>('DB_USERNAME'),
       password: configService.get<string>('DB_PASSWORD'),
       database: configService.get<string>('DB_DATABASE'),
-      entities: ['dist/**/*.entity{.ts,.js}'],
-      migrations: ['dist/**/.migration{.ts,.js}'],
+      entities: ['../**/*.entity.js'],
+      migrations: ['../**/*.migration.js'],
     });
     break;
   default:
@@ -44,8 +44,8 @@ switch (type) {
       username: configService.get<string>('DB_USERNAME'),
       password: configService.get<string>('DB_PASSWORD'),
       database: configService.get<string>('DB_DATABASE'),
-      entities: ['dist/**/*.entity{.ts,.js}'],
-      migrations: ['dist/**/.migration{.ts,.js}'],
+      entities: ['../**/*.entity.js'],
+      migrations: ['../**/*.migration.js'],
     });
 }
 

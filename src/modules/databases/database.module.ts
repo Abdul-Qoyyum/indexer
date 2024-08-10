@@ -20,7 +20,7 @@ import { MONGODB, POSTGRES } from '../libs/constants';
               username: configService.get<string>('DB_USERNAME'),
               password: configService.get<string>('DB_PASSWORD'),
               database: configService.get<string>('DB_DATABASE'),
-              entities: ['dist/**/*.entity.js'],
+              entities: ['./*.entity.js'],
               useUnifiedTopology: true,
               logging: true,
             };
@@ -33,8 +33,8 @@ import { MONGODB, POSTGRES } from '../libs/constants';
               username: configService.get<string>('DB_USERNAME'),
               password: configService.get<string>('DB_PASSWORD'),
               database: configService.get<string>('DB_DATABASE'),
-              entities: ['dist/**/*.entity{.ts,.js}'],
-              migrations: ['dist/**/.migration{.ts,.js}'],
+              entities: ['./*.entity.js'],
+              migrations: ['./*.migration.js'],
               extra: {
                 connectionLimit: 10,
               },
@@ -48,8 +48,8 @@ import { MONGODB, POSTGRES } from '../libs/constants';
               username: configService.get<string>('DB_USERNAME'),
               password: configService.get<string>('DB_PASSWORD'),
               database: configService.get<string>('DB_DATABASE'),
-              entities: ['dist/**/*.entity{.ts,.js}'],
-              migrations: ['dist/**/.migration{.ts,.js}'],
+              entities: ['./*.entity.js'],
+              migrations: ['./*.migration.js'],
             };
         }
         return database;
