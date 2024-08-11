@@ -82,4 +82,24 @@ export class CommitFactory {
 
     return topAuthors;
   }
+
+  async getCommitsByRepositoryName(
+    repositoryName: string,
+    page: number,
+    pageSize: number,
+  ): Promise<{
+    commits: Partial<CommitEntity[]>;
+    total: number;
+    page: number;
+  }> {
+    const [commits, total] = await this.repository.commitEntityResource
+      .createQueryBuilder('commit')
+      .innerJoin('commit.repository', 'repository')
+      .where('repository.name = :repositoryName', { repositoryName })
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
+
+    return { total, page: Number(page), commits };
+  }
 }

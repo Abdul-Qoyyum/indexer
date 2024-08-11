@@ -137,4 +137,22 @@ export class CommitService {
 
     return data;
   }
+
+  async getTopAuthorsByCommitCount(limit: number) {
+    return this.commitFactory.getTopAuthorsByCommitCount(limit);
+  }
+
+  async getCommitsByRepositoryName(query: {
+    repository_name: string;
+    page?: number;
+    limit?: number;
+  }) {
+    const currentPage = query?.page ?? 1;
+    const perPage = query?.limit ?? 10;
+    return this.commitFactory.getCommitsByRepositoryName(
+      query.repository_name,
+      currentPage,
+      perPage,
+    );
+  }
 }

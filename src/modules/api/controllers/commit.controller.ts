@@ -1,12 +1,12 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CoreController } from '../core.controller';
-import { CommitFactory } from '../factories/commit.factory';
+import { CommitService } from '../services/commit.service';
 
 @Controller('commits')
 @ApiTags('commits')
 export class CommitController extends CoreController {
-  constructor(private readonly commitFactory: CommitFactory) {
+  constructor(private readonly commitService: CommitService) {
     super();
   }
 
@@ -16,11 +16,26 @@ export class CommitController extends CoreController {
   ) {
     try {
       const response =
-        await this.commitFactory.getTopAuthorsByCommitCount(limit);
+        await this.commitService.getTopAuthorsByCommitCount(limit);
       return this.successResponse(
-        'Authors by commit count successfully retrieved',
+        'Top Authors by commit count successfully retrieved',
         response,
       );
+    } catch (error) {
+      return this.errorResponse(error);
+    }
+  }
+
+  @Get()
+  @ApiQuery({ name: 'repository_name', required: false, type: String })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @Get('getCommitsByRepositoryName')
+  async getCommitsByRepositoryName(
+    @Query() query: { repository_name: string; page?: number; limit?: number },
+  ) {
+    try {
+      return this.commitService.getCommitsByRepositoryName(query);
     } catch (error) {
       return this.errorResponse(error);
     }
