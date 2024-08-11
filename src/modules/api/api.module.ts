@@ -9,6 +9,7 @@ import { RepositoryEntity } from '../databases/entities/repository.entity';
 import { CommitEntity } from '../databases/entities/commit.entity';
 import { RepositoryChangeEvent } from './events/repository.event';
 import { RepositorySubscriber } from './subscribers/repository.subscriber';
+import { CommitService } from './services/commit.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RepositoryEntity, CommitEntity])],
@@ -20,6 +21,7 @@ import { RepositorySubscriber } from './subscribers/repository.subscriber';
     RepositoryFactory,
     RepositoryChangeEvent,
     RepositorySubscriber,
+    CommitService,
   ],
   exports: [],
 })

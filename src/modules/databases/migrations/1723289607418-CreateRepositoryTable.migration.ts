@@ -21,6 +21,11 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'full_name',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'description',
             type: 'text',
             isNullable: true,

@@ -26,11 +26,9 @@ export class RelationalRepository implements RepositoryInterface {
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {
-    if (manager) {
-      const user = await manager.create(RepositoryEntity, data);
-      return await manager.save(user);
-    }
-    return await this.githubRepository.save(data);
+    return manager
+      ? await manager.save(RepositoryEntity, data)
+      : await this.githubRepository.save(data);
   }
 
   async update(
@@ -56,5 +54,12 @@ export class RelationalRepository implements RepositoryInterface {
     if (result.affected === 0) {
       throw new NotFoundException('Repository not found');
     }
+  }
+
+  async upsertRepositoryEntity(
+    filter: Partial<RepositoryEntity>,
+    updateData: Partial<RepositoryEntity>,
+  ) {
+    return await this.githubRepository.upsert([updateData], ['id']);
   }
 }

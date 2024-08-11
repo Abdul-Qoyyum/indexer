@@ -4,6 +4,8 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  ObjectId,
+  ObjectIdColumn,
   PrimaryGeneratedColumn,
   type Relation,
 } from 'typeorm';
@@ -14,6 +16,9 @@ import { RepositoryEntity } from './repository.entity';
 export class CommitEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ObjectIdColumn()
+  _id: ObjectId;
 
   @Column({ type: 'text', nullable: true })
   message?: string;

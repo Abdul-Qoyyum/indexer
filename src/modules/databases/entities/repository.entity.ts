@@ -3,10 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ObjectIdColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   Relation,
   UpdateDateColumn,
+  ObjectId,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CommitEntity } from './commit.entity';
@@ -16,8 +18,14 @@ export class RepositoryEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ObjectIdColumn()
+  _id: ObjectId;
+
   @Column({ type: 'varchar', nullable: true })
   name?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  full_name?: string;
 
   @Column({ type: 'varchar', nullable: true })
   url?: string;

@@ -11,17 +11,18 @@ export class RepositoryFactory {
   repository: MongoDBRepository | RelationalRepository;
   gitHubToken: string;
   githubRepoBaseUrl: string;
+  dbType: string;
   constructor(
     private readonly mongoDBRepository: MongoDBRepository,
     private readonly configService: ConfigService,
     private readonly relationalRepository: RelationalRepository,
   ) {
+    this.dbType = this.configService.get<string>('DB_TYPE');
     this.setRepository();
   }
 
   setRepository() {
-    const dbType = this.configService.get<string>('DB_TYPE');
-    switch (dbType) {
+    switch (this.dbType) {
       case MONGODB:
         this.repository = this.mongoDBRepository;
         break;
@@ -44,10 +45,18 @@ export class RepositoryFactory {
     return this.repository.findOne(data);
   }
 
-  save(
+  async save(
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {
+    const { full_name } = data;
+    if (this.dbType === MONGODB) {
+      return this.repository.upsertRepositoryEntity({ full_name }, data);
+    }
+    const entity = await this.repository.findOne({ full_name });
+    if (entity) {
+      data.id = entity.id;
+    }
     return this.repository.save(data, manager);
   }
 }

@@ -26,11 +26,9 @@ export class MongoDBRepository implements RepositoryInterface {
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {
-    if (manager) {
-      const user = await manager.create(RepositoryEntity, data);
-      return await manager.save(user);
-    }
-    return await this.githubRepository.save(data);
+    return manager
+      ? await manager.save(RepositoryEntity, data)
+      : await this.githubRepository.save(data);
   }
 
   async update(
@@ -56,5 +54,17 @@ export class MongoDBRepository implements RepositoryInterface {
     if (result.affected === 0) {
       throw new NotFoundException('Repository not found');
     }
+  }
+
+  async upsertRepositoryEntity(
+    filter: Partial<RepositoryEntity>,
+    updateData: Partial<RepositoryEntity>,
+  ) {
+    const result = await this.githubRepository.findOneAndUpdate(
+      filter,
+      { $set: updateData },
+      { returnDocument: 'after', upsert: true },
+    );
+    return result.value;
   }
 }
