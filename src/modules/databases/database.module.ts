@@ -21,7 +21,7 @@ import { MONGODB, POSTGRES } from '../libs/constants';
               password: configService.get<string>('DB_PASSWORD'),
               database: configService.get<string>('DB_DATABASE'),
               autoLoadEntities: true,
-              entities: ['./**/*.entity.js'],
+              entities: ['./**/*.entity.doc.js'],
               useUnifiedTopology: true,
               logging: true,
             };

@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
 import {
   EntityManager,
   FindOperator,
@@ -8,6 +7,7 @@ import {
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RepositoryInterface } from '../interfaces';
+import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
 
 @Injectable()
 export class MongoDBRepository implements RepositoryInterface {
@@ -36,7 +36,9 @@ export class MongoDBRepository implements RepositoryInterface {
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {
-    const repository = await this.githubRepository.findOne({ where: { id } });
+    const repository = await this.githubRepository.findOne({
+      where: { _id: id },
+    });
 
     if (!repository) {
       throw new NotFoundException('Repository not found');
@@ -59,7 +61,7 @@ export class MongoDBRepository implements RepositoryInterface {
   async upsertRepositoryEntity(
     filter: Partial<RepositoryEntity>,
     updateData: Partial<RepositoryEntity>,
-  ) {
+  ): Promise<Partial<RepositoryEntity>> {
     const result = await this.githubRepository.findOneAndUpdate(
       filter,
       { $set: updateData },

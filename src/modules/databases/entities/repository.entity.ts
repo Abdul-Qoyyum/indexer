@@ -3,12 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ObjectIdColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   Relation,
   UpdateDateColumn,
-  ObjectId,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CommitEntity } from './commit.entity';
@@ -16,10 +14,7 @@ import { CommitEntity } from './commit.entity';
 @Entity('repositories')
 export class RepositoryEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @ObjectIdColumn()
-  _id: ObjectId;
+  _id: string;
 
   @Column({ type: 'varchar', nullable: true })
   name?: string;
@@ -59,8 +54,8 @@ export class RepositoryEntity {
 
   @BeforeInsert()
   generateId() {
-    if (!this.id) {
-      this.id = uuidv4();
+    if (!this._id) {
+      this._id = uuidv4();
     }
   }
 }

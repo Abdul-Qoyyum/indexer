@@ -16,12 +16,12 @@ import { CommitService } from './services/commit.service';
   controllers: [RepositoryController],
   providers: [
     RepositoryService,
-    RelationalRepository,
-    MongoDBRepository,
     RepositoryFactory,
     RepositoryChangeEvent,
     RepositorySubscriber,
     CommitService,
+    MongoDBRepository,
+    RelationalRepository,
   ],
   exports: [],
 })

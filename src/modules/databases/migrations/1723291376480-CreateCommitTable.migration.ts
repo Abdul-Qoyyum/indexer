@@ -53,7 +53,7 @@ export class CreateCommitTable1723291376480 implements MigrationInterface {
       'commits',
       new TableForeignKey({
         columnNames: ['repository_id'],
-        referencedColumnNames: ['id'],
+        referencedColumnNames: ['_id'],
         referencedTableName: 'repositories',
         onDelete: 'CASCADE',
       }),

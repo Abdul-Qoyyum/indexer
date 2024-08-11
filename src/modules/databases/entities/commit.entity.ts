@@ -4,8 +4,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  ObjectId,
-  ObjectIdColumn,
   PrimaryGeneratedColumn,
   type Relation,
 } from 'typeorm';
@@ -15,10 +13,7 @@ import { RepositoryEntity } from './repository.entity';
 @Entity('commits')
 export class CommitEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @ObjectIdColumn()
-  _id: ObjectId;
+  _id: string;
 
   @Column({ type: 'text', nullable: true })
   message?: string;
@@ -41,8 +36,8 @@ export class CommitEntity {
 
   @BeforeInsert()
   generateId() {
-    if (!this.id) {
-      this.id = uuidv4();
+    if (!this._id) {
+      this._id = uuidv4();
     }
   }
 }

@@ -2,7 +2,9 @@ import { RepositoryEntity } from 'src/modules/databases/entities/repository.enti
 import { EntityManager, FindOperator, FindOptionsWhere } from 'typeorm';
 
 export interface RepositoryInterface {
-  findOne(data: FindOptionsWhere<RepositoryEntity>): Promise<RepositoryEntity>;
+  findOne(
+    data: FindOptionsWhere<RepositoryEntity>,
+  ): Promise<Partial<RepositoryEntity>>;
   save(
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,

@@ -9,7 +9,7 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
         name: 'repositories',
         columns: [
           {
-            name: 'id',
+            name: '_id',
             type: 'uuid',
             isPrimary: true,
             isGenerated: true,

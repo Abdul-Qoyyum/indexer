@@ -45,18 +45,17 @@ export class RepositoryFactory {
     return this.repository.findOne(data);
   }
 
-  async save(
-    data: Partial<RepositoryEntity>,
-    manager: EntityManager | null,
-  ): Promise<Partial<RepositoryEntity>> {
+  async save(data: Partial<RepositoryEntity>, manager: EntityManager | null) {
     const { full_name } = data;
     if (this.dbType === MONGODB) {
       return this.repository.upsertRepositoryEntity({ full_name }, data);
     }
-    const entity = await this.repository.findOne({ full_name });
+    const entity = await this.repository.findOne({
+      full_name,
+    });
     if (entity) {
-      data.id = entity.id;
+      data._id = entity._id;
     }
-    return this.repository.save(data, manager);
+    return this.repository.save(data as Partial<RepositoryEntity>, manager);
   }
 }
