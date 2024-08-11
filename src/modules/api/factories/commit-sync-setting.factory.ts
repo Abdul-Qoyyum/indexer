@@ -35,7 +35,7 @@ export class CommitSyncSettingFactory {
   }
 
   async update(
-    id: string | FindOperator<string>,
+    id: number | FindOperator<number>,
     data: Partial<CommitSyncSettingsEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<CommitSyncSettingsEntity>> {

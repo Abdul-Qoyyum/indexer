@@ -97,6 +97,7 @@ export class CommitService {
           {
             repository_id: payload.id,
             date,
+            reset_status: false,
           },
           manager,
         );

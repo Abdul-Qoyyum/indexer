@@ -10,7 +10,7 @@ export interface RepositoryInterface {
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>>;
   update(
-    id: string | FindOperator<string>,
+    id: number | FindOperator<number>,
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>>;

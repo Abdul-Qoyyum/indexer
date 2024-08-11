@@ -33,7 +33,7 @@ export class RelationalRepository implements RepositoryInterface {
   }
 
   async update(
-    id: string | FindOperator<string>,
+    id: number | FindOperator<number>,
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {

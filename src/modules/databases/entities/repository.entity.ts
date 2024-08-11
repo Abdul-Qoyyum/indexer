@@ -15,7 +15,7 @@ import { CommitSyncSettingsEntity } from './commit-sync-setting.entity';
 @Entity('repositories')
 export class RepositoryEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'varchar', nullable: true })
   name?: string;
@@ -45,7 +45,7 @@ export class RepositoryEntity {
   watchers_count?: string;
 
   @Column({ type: 'varchar', nullable: true })
-  commit_sync_setting_id?: string;
+  commit_sync_setting_id?: number;
 
   @CreateDateColumn()
   created_at: Date;

@@ -27,6 +27,12 @@ export class CreateCommitSyncSettingsTable1723289607417
             type: 'int',
           },
           {
+            name: 'reset_status',
+            type: 'boolean',
+            default: false,
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
