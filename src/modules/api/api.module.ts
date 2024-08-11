@@ -37,6 +37,6 @@ import { CommitFactory } from './factories/commit.factory';
     CommitFactory,
     CommitRepository,
   ],
-  exports: [],
+  exports: [CommitService, RepositoryChangeEvent, RepositoryFactory],
 })
 export class ApiModule {}

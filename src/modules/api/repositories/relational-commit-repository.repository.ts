@@ -68,8 +68,6 @@ export class CommitRepository implements RepositoryInterface {
     path: string[],
     manager: EntityManager | null,
   ) {
-    console.log(updateData);
-    console.log(path);
     return manager
       ? await manager.upsert(CommitEntity, updateData, path)
       : await this.commitEntity.upsert(updateData, path);

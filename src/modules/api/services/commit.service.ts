@@ -44,7 +44,8 @@ export class CommitService {
       );
 
       if (commitSyncSetting?.date) {
-        url = `${payload.url}?since=${commitSyncSetting.date}&per_page=${this.perPage}`;
+        const since = new Date(commitSyncSetting.date).toISOString();
+        url = `${payload.url}/commits?since=${since}&per_page=${this.perPage}`;
       }
 
       let date: string;
@@ -82,6 +83,8 @@ export class CommitService {
 
         const linkHeader = headers.link;
 
+        this._logger.log(`linkHeader: ${JSON.stringify(linkHeader)}`);
+
         hasMorePages = linkHeader && linkHeader.includes(`rel=\"next\"`);
 
         if (hasMorePages) {
@@ -97,6 +100,11 @@ export class CommitService {
           },
           manager,
         );
+
+        this._logger.log(
+          `commitSyncSetting: ${JSON.stringify(commitSyncSetting)}`,
+        );
+
         await Promise.all([
           this.repositoryFactory.save(
             {

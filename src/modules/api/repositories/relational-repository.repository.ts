@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
 import {
   EntityManager,
+  FindManyOptions,
   FindOperator,
   FindOptionsWhere,
   Repository,
@@ -58,14 +59,17 @@ export class RelationalRepository implements RepositoryInterface {
     }
   }
 
-  async upsertRepositoryEntity(
-    filter: Partial<RepositoryEntity>,
-    updateData: Partial<RepositoryEntity>,
-  ) {
-    return await this.githubRepository.upsert([updateData], ['id']);
-  }
-
   async bulkUpsert(updateData: Partial<RepositoryEntity[]>, path: string[]) {
     return await this.githubRepository.upsert(updateData, path);
+  }
+
+  async getTotal(filter: FindManyOptions<RepositoryEntity>) {
+    return await this.githubRepository.count(filter);
+  }
+
+  async find(
+    data: FindManyOptions<RepositoryEntity>,
+  ): Promise<RepositoryEntity[]> {
+    return await this.githubRepository.find(data);
   }
 }

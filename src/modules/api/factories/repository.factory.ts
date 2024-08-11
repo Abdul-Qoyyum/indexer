@@ -3,7 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { MYSQL, POSTGRES } from 'src/modules/libs/constants';
 import { RelationalRepository } from '../repositories/relational-repository.repository';
 import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
-import { EntityManager, FindOperator, FindOptionsWhere } from 'typeorm';
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOperator,
+  FindOptionsWhere,
+} from 'typeorm';
 
 @Injectable()
 export class RepositoryFactory {
@@ -49,13 +54,22 @@ export class RepositoryFactory {
   }
 
   async save(data: Partial<RepositoryEntity>, manager: EntityManager | null) {
-    const { full_name } = data;
-    const entity = await this.repository.findOne({
-      full_name,
-    });
-    if (entity) {
-      data.id = entity.id;
+    if (data?.full_name) {
+      const entity = await this.repository.findOne({
+        full_name: data.full_name,
+      });
+      if (entity) {
+        data.id = entity.id;
+      }
     }
     return await this.repository.save(data, manager);
+  }
+
+  async getTotal(filter: FindManyOptions<RepositoryEntity>) {
+    return this.repository.getTotal(filter);
+  }
+
+  async find(data: FindManyOptions<RepositoryEntity>) {
+    return this.repository.find(data);
   }
 }

@@ -15,8 +15,4 @@ export interface RepositoryInterface {
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>>;
   delete(id: string | number): Promise<void>;
-  upsertRepositoryEntity(
-    filter: Partial<RepositoryEntity>,
-    updateData: Partial<RepositoryEntity>,
-  );
 }

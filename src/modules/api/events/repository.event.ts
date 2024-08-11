@@ -22,6 +22,7 @@ export class RepositoryChangeEvent {
   @OnEvent('repository.change.event', { async: true })
   async listenToChangeEvent(data: Partial<RepositoryEntity>) {
     try {
+      this._logger.log(`listenToChangeEvent data: ${JSON.stringify(data)}`);
       await this.commitService.processCommitsSyncForRepository(data);
     } catch (e) {
       this._logger.error(
