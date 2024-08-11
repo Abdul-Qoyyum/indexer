@@ -2,18 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MYSQL, POSTGRES } from 'src/modules/libs/constants';
 import { EntityManager, FindOperator, FindOptionsWhere } from 'typeorm';
-import { RelationalCommitSyncSettingRepository } from '../repositories/relational-commit-sync-settings.repository';
-import { CommitSyncSettingsEntity } from 'src/modules/databases/entities/commit-sync-setting.entity';
+import { CommitRepository } from '../repositories/relational-commit-repository.repository';
+import { CommitEntity } from 'src/modules/databases/entities/commit.entity';
 
 @Injectable()
-export class CommitSyncSettingFactory {
-  repository: RelationalCommitSyncSettingRepository;
+export class CommitFactory {
+  repository: CommitRepository;
   gitHubToken: string;
   githubRepoBaseUrl: string;
   dbType: string;
   constructor(
     private readonly configService: ConfigService,
-    private readonly relationalCommitSyncSettingRepository: RelationalCommitSyncSettingRepository,
+    private readonly commitRepository: CommitRepository,
   ) {
     this.dbType = this.configService.get<string>('DB_TYPE');
     this.setRepository();
@@ -23,10 +23,10 @@ export class CommitSyncSettingFactory {
     switch (this.dbType) {
       case POSTGRES:
       case MYSQL:
-        this.repository = this.relationalCommitSyncSettingRepository;
+        this.repository = this.commitRepository;
         break;
       default:
-        this.repository = this.relationalCommitSyncSettingRepository;
+        this.repository = this.commitRepository;
     }
   }
 
@@ -36,22 +36,19 @@ export class CommitSyncSettingFactory {
 
   async update(
     id: string | FindOperator<string>,
-    data: Partial<CommitSyncSettingsEntity>,
+    data: Partial<CommitEntity>,
     manager: EntityManager | null,
-  ): Promise<Partial<CommitSyncSettingsEntity>> {
+  ): Promise<Partial<CommitEntity>> {
     return this.repository.update(id, data, manager);
   }
 
   findOne(
-    data: FindOptionsWhere<CommitSyncSettingsEntity>,
-  ): Promise<Partial<CommitSyncSettingsEntity>> {
+    data: FindOptionsWhere<CommitEntity>,
+  ): Promise<Partial<CommitEntity>> {
     return this.repository.findOne(data);
   }
 
-  async save(
-    data: Partial<CommitSyncSettingsEntity>,
-    manager: EntityManager | null,
-  ) {
+  async save(data: Partial<CommitEntity>, manager: EntityManager | null) {
     const { repository_id } = data;
     const entity = await this.repository.findOne({
       repository_id,
@@ -59,9 +56,14 @@ export class CommitSyncSettingFactory {
     if (entity) {
       data._id = entity._id;
     }
-    return this.repository.save(
-      data as Partial<CommitSyncSettingsEntity>,
-      manager,
-    );
+    return await this.repository.save(data, manager);
+  }
+
+  async bulkUpsert(
+    updateData: Partial<CommitEntity[]>,
+    path: string[],
+    manager: EntityManager | null,
+  ) {
+    return await this.repository.bulkUpsert(updateData, path, manager);
   }
 }

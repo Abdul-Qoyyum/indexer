@@ -64,4 +64,8 @@ export class RelationalRepository implements RepositoryInterface {
   ) {
     return await this.githubRepository.upsert([updateData], ['id']);
   }
+
+  async bulkUpsert(updateData: Partial<RepositoryEntity[]>, path: string[]) {
+    return await this.githubRepository.upsert(updateData, path);
+  }
 }

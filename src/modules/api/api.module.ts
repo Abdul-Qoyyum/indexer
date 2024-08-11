@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { RelationalRepository } from './repositories/relational-repository.repository';
-import { MongoDBRepository } from './repositories/mongodb-repository.repository';
 import { RepositoryService } from './services/repository.service';
 import { RepositoryFactory } from './factories/repository.factory';
 import { RepositoryController } from './controllers/repository.controller';
@@ -12,8 +11,9 @@ import { RepositorySubscriber } from './subscribers/repository.subscriber';
 import { CommitService } from './services/commit.service';
 import { CommitSyncSettingsEntity } from '../databases/entities/commit-sync-setting.entity';
 import { CommitSyncSettingFactory } from './factories/commit-sync-setting.factory';
-import { MongoDBCommitSyncSettingRepository } from './repositories/mongodb-commit-sync-setting.repository';
 import { RelationalCommitSyncSettingRepository } from './repositories/relational-commit-sync-settings.repository';
+import { CommitRepository } from './repositories/relational-commit-repository.repository';
+import { CommitFactory } from './factories/commit.factory';
 
 @Module({
   imports: [
@@ -21,6 +21,7 @@ import { RelationalCommitSyncSettingRepository } from './repositories/relational
       CommitEntity,
       CommitSyncSettingsEntity,
       RepositoryEntity,
+      CommitRepository,
     ]),
   ],
   controllers: [RepositoryController],
@@ -30,11 +31,11 @@ import { RelationalCommitSyncSettingRepository } from './repositories/relational
     RepositoryChangeEvent,
     RepositorySubscriber,
     CommitService,
-    MongoDBRepository,
     RelationalRepository,
     CommitSyncSettingFactory,
-    MongoDBCommitSyncSettingRepository,
     RelationalCommitSyncSettingRepository,
+    CommitFactory,
+    CommitRepository,
   ],
   exports: [],
 })

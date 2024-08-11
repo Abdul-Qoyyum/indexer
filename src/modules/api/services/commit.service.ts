@@ -6,6 +6,7 @@ import { RepositoryFactory } from '../factories/repository.factory';
 import { CommitSyncSettingFactory } from '../factories/commit-sync-setting.factory';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { CommitFactory } from '../factories/commit.factory';
 
 @Injectable()
 export class CommitService {
@@ -20,6 +21,7 @@ export class CommitService {
     private readonly httpService: HttpService,
     private readonly repositoryFactory: RepositoryFactory,
     private readonly commitSyncSettingFactory: CommitSyncSettingFactory,
+    private readonly commitFactory: CommitFactory,
   ) {
     this.gitHubToken = this.configService.get<string>('GITHUB_TOKEN');
     this.githubRepoBaseUrl = this.configService.get<string>(
@@ -102,8 +104,9 @@ export class CommitService {
           },
           manager,
         );
+
         //save commits
-        
+        await this.commitFactory.bulkUpsert(records, ['node_id'], manager);
       });
     }
   }
