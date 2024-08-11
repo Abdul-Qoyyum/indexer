@@ -40,7 +40,7 @@ export class RepositoryFactory {
   }
 
   async update(
-    id: string | FindOperator<string>,
+    id: number | FindOperator<number>,
     data: Partial<RepositoryEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {

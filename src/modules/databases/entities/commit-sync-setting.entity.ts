@@ -12,13 +12,13 @@ import { RepositoryEntity } from './repository.entity';
 @Entity('commit_sync_settings')
 export class CommitSyncSettingsEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'date', nullable: true })
   date?: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  repository_id?: string;
+  @Column({ type: 'int', nullable: true })
+  repository_id?: number;
 
   @CreateDateColumn()
   created_at: Date;

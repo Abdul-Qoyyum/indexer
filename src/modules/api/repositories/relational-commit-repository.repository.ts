@@ -30,7 +30,7 @@ export class CommitRepository implements RepositoryInterface {
   }
 
   async update(
-    id: string | FindOperator<string>,
+    id: number | FindOperator<number>,
     data: Partial<CommitEntity>,
     manager: EntityManager | null,
   ): Promise<Partial<CommitEntity>> {

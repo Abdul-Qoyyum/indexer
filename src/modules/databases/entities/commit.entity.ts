@@ -11,7 +11,7 @@ import { RepositoryEntity } from './repository.entity';
 @Entity('commits')
 export class CommitEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'text', nullable: true })
   message?: string;
@@ -28,8 +28,8 @@ export class CommitEntity {
   @Column({ type: 'varchar', nullable: true })
   url?: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  repository_id?: string;
+  @Column({ type: 'int', nullable: true })
+  repository_id?: number;
 
   @ManyToOne(() => RepositoryEntity, (repository) => repository.commits)
   @JoinColumn({ name: 'repository_id' })
