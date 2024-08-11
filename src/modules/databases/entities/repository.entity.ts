@@ -1,5 +1,4 @@
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,7 +9,6 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
 import { CommitEntity } from './commit.entity';
 import { CommitSyncSettingsEntity } from './commit-sync-setting.entity';
 
@@ -63,12 +61,5 @@ export class RepositoryEntity {
     (commit_sync_settings) => commit_sync_settings.repository,
   )
   @JoinColumn({ name: 'commit_sync_setting_id' })
-  commit_sync_setting: Relation<CommitSyncSettingsEntity>;
-
-  @BeforeInsert()
-  generateId() {
-    if (!this._id) {
-      this._id = uuidv4();
-    }
-  }
+  commit_sync_setting: Promise<Relation<CommitSyncSettingsEntity>>;
 }

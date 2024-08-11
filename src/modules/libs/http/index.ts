@@ -56,7 +56,10 @@ export class HttpService {
           );
           break;
       }
-      return response?.data;
+      return {
+        headers: response?.headers,
+        data: response?.data,
+      };
     } catch (err) {
       return this.errorFormatter(err);
     }

@@ -24,11 +24,15 @@ export class RepositoryService {
   async indexRepository(data: IndexRepositoryDto, manager: EntityManager) {
     const { owner, repo } = data;
     const providerUrl = `${this.githubRepoBaseUrl}/${owner}/${repo}`;
-    const gitHubRepository = await this.httpService.send('get', providerUrl, {
-      Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${this.gitHubToken}`,
-      'X-GitHub-Api-Version': '2022-11-28',
-    });
+    const { data: gitHubRepository } = await this.httpService.send(
+      'get',
+      providerUrl,
+      {
+        Accept: 'application/vnd.github+json',
+        Authorization: `Bearer ${this.gitHubToken}`,
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    );
 
     const {
       name,

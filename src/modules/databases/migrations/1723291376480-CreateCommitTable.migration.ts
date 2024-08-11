@@ -14,11 +14,16 @@ export class CreateCommitTable1723291376480 implements MigrationInterface {
         name: 'commits',
         columns: [
           {
-            name: 'id',
+            name: '_id',
             type: 'uuid',
             isPrimary: true,
             isGenerated: true,
             generationStrategy: 'uuid',
+          },
+          {
+            name: 'node_id',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'message',

@@ -1,17 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
-import { DataSource } from 'typeorm';
+import { CommitService } from '../services/commit.service';
 
 @Injectable()
 export class RepositoryChangeEvent {
   ENTITY_CHANGE_EVENT = 'repository.change.event';
   private readonly _logger = new Logger(RepositoryChangeEvent.name);
   constructor(
-    @InjectDataSource()
-    private readonly dataSource: DataSource,
     private readonly eventEmitter: EventEmitter2,
+    private readonly commitService: CommitService,
   ) {}
 
   dispatch(data) {
@@ -24,9 +22,7 @@ export class RepositoryChangeEvent {
   @OnEvent('repository.change.event', { async: true })
   async listenToChangeEvent(data: Partial<RepositoryEntity>) {
     try {
-      //   await this.dataSource.transaction(async (manager) => {
-      //Do the processing over here
-      //   });
+      await this.commitService.processCommitsSyncForRepository(data);
     } catch (e) {
       this._logger.error(
         `Error processing commit sync for changed ${JSON.stringify(data)}`,

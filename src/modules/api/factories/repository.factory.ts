@@ -4,7 +4,7 @@ import { MongoDBRepository } from '../repositories/mongodb-repository.repository
 import { MONGODB, MYSQL, POSTGRES } from 'src/modules/libs/constants';
 import { RelationalRepository } from '../repositories/relational-repository.repository';
 import { RepositoryEntity } from 'src/modules/databases/entities/repository.entity';
-import { EntityManager, FindOptionsWhere } from 'typeorm';
+import { EntityManager, FindOperator, FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class RepositoryFactory {
@@ -39,6 +39,14 @@ export class RepositoryFactory {
     return this.repository;
   }
 
+  async update(
+    id: string | FindOperator<string>,
+    data: Partial<RepositoryEntity>,
+    manager: EntityManager | null,
+  ): Promise<Partial<RepositoryEntity>> {
+    return this.repository.update(id, data, manager);
+  }
+
   findOne(
     data: FindOptionsWhere<RepositoryEntity>,
   ): Promise<Partial<RepositoryEntity>> {
@@ -56,6 +64,9 @@ export class RepositoryFactory {
     if (entity) {
       data._id = entity._id;
     }
-    return this.repository.save(data as Partial<RepositoryEntity>, manager);
+    return await this.repository.save(data, manager);
   }
+
+
+  async 
 }
