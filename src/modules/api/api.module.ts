@@ -10,9 +10,16 @@ import { CommitEntity } from '../databases/entities/commit.entity';
 import { RepositoryChangeEvent } from './events/repository.event';
 import { RepositorySubscriber } from './subscribers/repository.subscriber';
 import { CommitService } from './services/commit.service';
+import { CommitSyncSettingsEntity } from '../databases/entities/commit-sync-setting.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RepositoryEntity, CommitEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      RepositoryEntity,
+      CommitEntity,
+      CommitSyncSettingsEntity,
+    ]),
+  ],
   controllers: [RepositoryController],
   providers: [
     RepositoryService,

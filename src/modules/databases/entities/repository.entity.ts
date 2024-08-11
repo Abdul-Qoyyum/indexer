@@ -3,13 +3,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CommitEntity } from './commit.entity';
+import { CommitSyncSettingsEntity } from './commit-sync-setting.entity';
 
 @Entity('repositories')
 export class RepositoryEntity {
@@ -43,6 +46,9 @@ export class RepositoryEntity {
   @Column({ type: 'varchar', nullable: true })
   watchers_count?: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  commit_sync_setting_id?: string;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -51,6 +57,13 @@ export class RepositoryEntity {
 
   @OneToMany(() => CommitEntity, (commit) => commit.repository)
   commits: Relation<CommitEntity[]>;
+
+  @OneToOne(
+    () => CommitSyncSettingsEntity,
+    (commit_sync_settings) => commit_sync_settings.repository,
+  )
+  @JoinColumn({ name: 'commit_sync_setting_id' })
+  commit_sync_setting: Relation<CommitSyncSettingsEntity>;
 
   @BeforeInsert()
   generateId() {

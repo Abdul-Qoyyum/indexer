@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateRepositoryTable1723289607418 implements MigrationInterface {
   name = 'CreateRepositoryTable1723289607418';
@@ -61,6 +66,11 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'commit_sync_setting_id',
+            type: 'uuid',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
@@ -73,6 +83,16 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
         ],
       }),
       true,
+    );
+
+    await queryRunner.createForeignKey(
+      'repositories',
+      new TableForeignKey({
+        columnNames: ['commit_sync_setting_id'],
+        referencedColumnNames: ['_id'],
+        referencedTableName: 'commit_sync_settings',
+        onDelete: 'CASCADE',
+      }),
     );
   }
 
