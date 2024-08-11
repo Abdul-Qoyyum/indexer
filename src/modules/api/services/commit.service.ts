@@ -66,13 +66,16 @@ export class CommitService {
         const parsedData = this.parseData(data);
 
         parsedData.forEach((record) => {
-          date = record?.commit?.committer?.date;
+          date = new Date(record?.commit?.committer?.date)
+            .toISOString()
+            .slice(0, 19)
+            .replace('T', ' ');
           records.push({
             message: record?.commit?.message,
             author: record?.commit?.author?.name,
             date,
             url: record?.commit?.url,
-            repository_id: payload._id,
+            repository_id: payload.id,
             node_id: record?.node_id,
           });
         });
@@ -87,26 +90,23 @@ export class CommitService {
       }
 
       await this.dataSource.transaction(async (manager) => {
-        //update the settings
         const commitSyncSetting = await this.commitSyncSettingFactory.save(
           {
-            repository_id: payload._id,
+            repository_id: payload.id,
             date,
           },
           manager,
         );
-
-        //update factory
-        await this.repositoryFactory.save(
-          {
-            _id: payload._id,
-            commit_sync_setting_id: commitSyncSetting._id,
-          },
-          manager,
-        );
-
-        //save commits
-        await this.commitFactory.bulkUpsert(records, ['node_id'], manager);
+        await Promise.all([
+          this.repositoryFactory.save(
+            {
+              id: payload.id,
+              commit_sync_setting_id: commitSyncSetting.id,
+            },
+            manager,
+          ),
+          this.commitFactory.bulkUpsert(records, ['node_id'], manager),
+        ]);
       });
     }
   }

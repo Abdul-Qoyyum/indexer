@@ -5,7 +5,6 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  UpdateEvent,
 } from 'typeorm';
 import { RepositoryChangeEvent } from '../events/repository.event';
 import { Logger } from '@nestjs/common';
@@ -30,11 +29,6 @@ export class RepositorySubscriber
 
   afterInsert(event: InsertEvent<RepositoryEntity>): Promise<any> | void {
     this._logger.log(`After Insert ${JSON.stringify(event.entity)}`);
-    this.repositoryChangeEvent.dispatch(event.entity);
-  }
-
-  afterUpdate(event: UpdateEvent<RepositoryEntity>): Promise<any> | void {
-    this._logger.log(`After Update ${JSON.stringify(event.entity)}`);
     this.repositoryChangeEvent.dispatch(event.entity);
   }
 }

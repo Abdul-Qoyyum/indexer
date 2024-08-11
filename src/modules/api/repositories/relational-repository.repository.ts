@@ -37,7 +37,7 @@ export class RelationalRepository implements RepositoryInterface {
     manager: EntityManager | null,
   ): Promise<Partial<RepositoryEntity>> {
     const repository = await this.githubRepository.findOne({
-      where: { _id: id },
+      where: { id: id },
     });
 
     if (!repository) {

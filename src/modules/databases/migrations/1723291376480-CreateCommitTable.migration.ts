@@ -14,11 +14,11 @@ export class CreateCommitTable1723291376480 implements MigrationInterface {
         name: 'commits',
         columns: [
           {
-            name: '_id',
-            type: 'uuid',
+            name: 'id',
+            type: 'int',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'uuid',
+            generationStrategy: 'increment',
           },
           {
             name: 'node_id',
@@ -47,7 +47,13 @@ export class CreateCommitTable1723291376480 implements MigrationInterface {
           },
           {
             name: 'repository_id',
-            type: 'uuid',
+            type: 'int',
+          },
+        ],
+        uniques: [
+          {
+            name: 'UQ_node_id',
+            columnNames: ['node_id'],
           },
         ],
       }),
@@ -58,7 +64,7 @@ export class CreateCommitTable1723291376480 implements MigrationInterface {
       'commits',
       new TableForeignKey({
         columnNames: ['repository_id'],
-        referencedColumnNames: ['_id'],
+        referencedColumnNames: ['id'],
         referencedTableName: 'repositories',
         onDelete: 'CASCADE',
       }),

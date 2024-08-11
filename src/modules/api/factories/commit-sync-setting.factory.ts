@@ -57,7 +57,7 @@ export class CommitSyncSettingFactory {
       repository_id,
     });
     if (entity) {
-      data._id = entity._id;
+      data.id = entity.id;
     }
     return this.repository.save(
       data as Partial<CommitSyncSettingsEntity>,

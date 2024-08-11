@@ -54,7 +54,7 @@ export class RepositoryFactory {
       full_name,
     });
     if (entity) {
-      data._id = entity._id;
+      data.id = entity.id;
     }
     return await this.repository.save(data, manager);
   }

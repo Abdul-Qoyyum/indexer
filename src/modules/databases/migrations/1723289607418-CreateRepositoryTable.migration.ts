@@ -14,11 +14,11 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
         name: 'repositories',
         columns: [
           {
-            name: '_id',
-            type: 'uuid',
+            name: 'id',
+            type: 'int',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'uuid',
+            generationStrategy: 'increment',
           },
           {
             name: 'name',
@@ -67,7 +67,7 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
           },
           {
             name: 'commit_sync_setting_id',
-            type: 'uuid',
+            type: 'int',
             isNullable: true,
           },
           {
@@ -89,7 +89,7 @@ export class CreateRepositoryTable1723289607418 implements MigrationInterface {
       'repositories',
       new TableForeignKey({
         columnNames: ['commit_sync_setting_id'],
-        referencedColumnNames: ['_id'],
+        referencedColumnNames: ['id'],
         referencedTableName: 'commit_sync_settings',
         onDelete: 'CASCADE',
       }),

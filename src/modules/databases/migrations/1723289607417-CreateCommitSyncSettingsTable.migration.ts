@@ -1,9 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateCommitSyncSettingsTable1723289607417
   implements MigrationInterface
@@ -16,11 +11,11 @@ export class CreateCommitSyncSettingsTable1723289607417
         name: 'commit_sync_settings',
         columns: [
           {
-            name: '_id',
-            type: 'uuid',
+            name: 'id',
+            type: 'int',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'uuid',
+            generationStrategy: 'increment',
           },
           {
             name: 'date',
@@ -29,7 +24,7 @@ export class CreateCommitSyncSettingsTable1723289607417
           },
           {
             name: 'repository_id',
-            type: 'uuid',
+            type: 'int',
           },
           {
             name: 'created_at',
@@ -44,16 +39,6 @@ export class CreateCommitSyncSettingsTable1723289607417
         ],
       }),
       true,
-    );
-
-    await queryRunner.createForeignKey(
-      'commit_sync_settings',
-      new TableForeignKey({
-        columnNames: ['repository_id'],
-        referencedColumnNames: ['_id'],
-        referencedTableName: 'repositories',
-        onDelete: 'CASCADE',
-      }),
     );
   }
 

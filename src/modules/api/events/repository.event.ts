@@ -27,6 +27,7 @@ export class RepositoryChangeEvent {
       this._logger.error(
         `Error processing commit sync for changed ${JSON.stringify(data)}`,
       );
+      this._logger.error(`Error: ${JSON.stringify(e)}`);
     }
   }
 }

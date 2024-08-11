@@ -35,7 +35,7 @@ export class CommitRepository implements RepositoryInterface {
     manager: EntityManager | null,
   ): Promise<Partial<CommitEntity>> {
     const repository = await this.commitEntity.findOne({
-      where: { _id: id },
+      where: { id },
     });
 
     if (!repository) {
@@ -68,6 +68,8 @@ export class CommitRepository implements RepositoryInterface {
     path: string[],
     manager: EntityManager | null,
   ) {
+    console.log(updateData);
+    console.log(path);
     return manager
       ? await manager.upsert(CommitEntity, updateData, path)
       : await this.commitEntity.upsert(updateData, path);

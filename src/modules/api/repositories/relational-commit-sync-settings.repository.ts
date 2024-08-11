@@ -39,7 +39,7 @@ export class RelationalCommitSyncSettingRepository
     manager: EntityManager | null,
   ): Promise<Partial<CommitSyncSettingsEntity>> {
     const repository = await this.commitSyncSettingsEntity.findOne({
-      where: { _id: id },
+      where: { id },
     });
 
     if (!repository) {

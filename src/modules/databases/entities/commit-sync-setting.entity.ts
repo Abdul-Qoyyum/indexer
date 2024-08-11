@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   type Relation,
@@ -12,11 +11,8 @@ import { RepositoryEntity } from './repository.entity';
 
 @Entity('commit_sync_settings')
 export class CommitSyncSettingsEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
-
-  @PrimaryColumn('uuid')
-  _id?: string;
 
   @Column({ type: 'date', nullable: true })
   date?: string;

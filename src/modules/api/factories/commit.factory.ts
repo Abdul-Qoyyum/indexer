@@ -54,7 +54,7 @@ export class CommitFactory {
       repository_id,
     });
     if (entity) {
-      data._id = entity._id;
+      data.id = entity.id;
     }
     return await this.repository.save(data, manager);
   }
@@ -62,7 +62,7 @@ export class CommitFactory {
   async bulkUpsert(
     updateData: Partial<CommitEntity[]>,
     path: string[],
-    manager: EntityManager | null,
+    manager: EntityManager | null = null,
   ) {
     return await this.repository.bulkUpsert(updateData, path, manager);
   }

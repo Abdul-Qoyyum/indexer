@@ -14,8 +14,8 @@ import { CommitSyncSettingsEntity } from './commit-sync-setting.entity';
 
 @Entity('repositories')
 export class RepositoryEntity {
-  @PrimaryGeneratedColumn('uuid')
-  _id: string;
+  @PrimaryGeneratedColumn()
+  id: string;
 
   @Column({ type: 'varchar', nullable: true })
   name?: string;

@@ -10,11 +10,8 @@ import { RepositoryEntity } from './repository.entity';
 
 @Entity('commits')
 export class CommitEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
-
-  @Column({ nullable: true })
-  _id: string;
 
   @Column({ type: 'text', nullable: true })
   message?: string;
