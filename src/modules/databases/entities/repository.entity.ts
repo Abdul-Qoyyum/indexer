@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   OneToMany,
   OneToOne,
@@ -18,6 +19,7 @@ export class RepositoryEntity {
   id: number;
 
   @Column({ type: 'varchar', nullable: true })
+  @Index()
   name?: string;
 
   @Column({ type: 'varchar', nullable: true })

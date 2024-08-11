@@ -66,4 +66,40 @@ export class CommitFactory {
   ) {
     return await this.repository.bulkUpsert(updateData, path, manager);
   }
+
+  async getTopAuthorsByCommitCount(limit: number): Promise<any[]> {
+    const topAuthors = await this.repository.commitEntityResource
+      .createQueryBuilder('commit')
+      .select('commit.author', 'author')
+      .addSelect('COUNT(commit.author)', 'commit_count')
+      .addSelect('repository.name', 'repository_name')
+      .leftJoin('commit.repository', 'repository')
+      .groupBy('commit.author')
+      .addGroupBy('repository.name')
+      .orderBy('commit_count', 'DESC')
+      .limit(limit)
+      .getRawMany();
+
+    return topAuthors;
+  }
+
+  async getCommitsByRepositoryName(
+    repositoryName: string,
+    page: number,
+    pageSize: number,
+  ): Promise<{
+    commits: Partial<CommitEntity[]>;
+    total: number;
+    page: number;
+  }> {
+    const [commits, total] = await this.repository.commitEntityResource
+      .createQueryBuilder('commit')
+      .innerJoin('commit.repository', 'repository')
+      .where('repository.name = :repositoryName', { repositoryName })
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
+
+    return { total, page: Number(page), commits };
+  }
 }

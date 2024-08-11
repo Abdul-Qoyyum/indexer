@@ -16,6 +16,10 @@ export class CommitRepository implements RepositoryInterface {
     private readonly commitEntity: Repository<CommitEntity>,
   ) {}
 
+  get commitEntityResource() {
+    return this.commitEntity;
+  }
+
   async findOne(data: FindOptionsWhere<CommitEntity>): Promise<CommitEntity> {
     return await this.commitEntity.findOne({ where: data });
   }

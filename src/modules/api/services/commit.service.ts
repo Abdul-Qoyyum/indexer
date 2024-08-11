@@ -14,6 +14,7 @@ export class CommitService {
   githubRepoBaseUrl: string;
   private readonly _logger = new Logger(CommitService.name);
   perPage: number;
+  chunkSize: number;
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
@@ -28,6 +29,7 @@ export class CommitService {
       'GITHUB_REPO_BASE_URL',
     );
     this.perPage = 30;
+    this.chunkSize = 500;
   }
 
   async processCommitsSyncForRepository(payload: Partial<RepositoryEntity>) {
@@ -81,10 +83,40 @@ export class CommitService {
           });
         });
 
+        // Release RAM / In memory usage
+        // Insert records in batches of 500
+        if (records.length >= this.chunkSize) {
+          const batch = records.splice(0, this.chunkSize);
+          await this.dataSource.transaction(async (manager) => {
+            const commitSyncSetting = await this.commitSyncSettingFactory.save(
+              {
+                repository_id: payload.id,
+                date,
+                reset_status: false,
+              },
+              manager,
+            );
+
+            this._logger.log(
+              `commitSyncSetting: ${JSON.stringify(commitSyncSetting)}`,
+            );
+
+            await Promise.all([
+              this.repositoryFactory.save(
+                {
+                  id: payload.id,
+                  commit_sync_setting_id: commitSyncSetting.id,
+                },
+                manager,
+              ),
+              this.commitFactory.bulkUpsert(batch, ['node_id'], manager),
+            ]);
+          });
+        }
+
+        // Check if there are more pages
         const linkHeader = headers.link;
-
         this._logger.log(`linkHeader: ${JSON.stringify(linkHeader)}`);
-
         hasMorePages = linkHeader && linkHeader.includes(`rel=\"next\"`);
 
         if (hasMorePages) {
@@ -92,31 +124,34 @@ export class CommitService {
         }
       }
 
-      await this.dataSource.transaction(async (manager) => {
-        const commitSyncSetting = await this.commitSyncSettingFactory.save(
-          {
-            repository_id: payload.id,
-            date,
-            reset_status: false,
-          },
-          manager,
-        );
-
-        this._logger.log(
-          `commitSyncSetting: ${JSON.stringify(commitSyncSetting)}`,
-        );
-
-        await Promise.all([
-          this.repositoryFactory.save(
+      // Insert remaining records if any
+      if (records.length > 0) {
+        await this.dataSource.transaction(async (manager) => {
+          const commitSyncSetting = await this.commitSyncSettingFactory.save(
             {
-              id: payload.id,
-              commit_sync_setting_id: commitSyncSetting.id,
+              repository_id: payload.id,
+              date,
+              reset_status: false,
             },
             manager,
-          ),
-          this.commitFactory.bulkUpsert(records, ['node_id'], manager),
-        ]);
-      });
+          );
+
+          this._logger.log(
+            `commitSyncSetting: ${JSON.stringify(commitSyncSetting)}`,
+          );
+
+          await Promise.all([
+            this.repositoryFactory.save(
+              {
+                id: payload.id,
+                commit_sync_setting_id: commitSyncSetting.id,
+              },
+              manager,
+            ),
+            this.commitFactory.bulkUpsert(records, ['node_id'], manager),
+          ]);
+        });
+      }
     }
   }
 
@@ -136,5 +171,23 @@ export class CommitService {
     data = data[namespaceKey];
 
     return data;
+  }
+
+  async getTopAuthorsByCommitCount(limit: number) {
+    return this.commitFactory.getTopAuthorsByCommitCount(limit);
+  }
+
+  async getCommitsByRepositoryName(query: {
+    repository_name: string;
+    page?: number;
+    limit?: number;
+  }) {
+    const currentPage = query?.page ?? 1;
+    const perPage = query?.limit ?? 10;
+    return this.commitFactory.getCommitsByRepositoryName(
+      query.repository_name,
+      currentPage,
+      perPage,
+    );
   }
 }

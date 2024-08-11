@@ -16,6 +16,7 @@ import { CommitRepository } from './repositories/relational-commit-repository.re
 import { CommitFactory } from './factories/commit.factory';
 import { CommitSyncSettingSubscriber } from './subscribers/commit-sync.subscriber';
 import { CommitSyncSettingEvent } from './events/commit-sync-setting.event';
+import { CommitController } from './controllers/commit.controller';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { CommitSyncSettingEvent } from './events/commit-sync-setting.event';
       CommitRepository,
     ]),
   ],
-  controllers: [RepositoryController],
+  controllers: [RepositoryController, CommitController],
   providers: [
     RepositoryService,
     RepositoryFactory,
