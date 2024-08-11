@@ -35,7 +35,9 @@ export class CommitController extends CoreController {
     @Query() query: { repository_name: string; page?: number; limit?: number },
   ) {
     try {
-      return this.commitService.getCommitsByRepositoryName(query);
+      const response =
+        await this.commitService.getCommitsByRepositoryName(query);
+      return this.successResponse('Commits successfully retrived', response);
     } catch (error) {
       return this.errorResponse(error);
     }
