@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RepositoryChangeEvent } from 'src/modules/api/events/repository.event';
+import { RepositoryEvent } from 'src/modules/api/events/repository.event';
 import { RepositoryFactory } from 'src/modules/api/factories/repository.factory';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class CommitSyncCron {
   private readonly threshold = 30;
   constructor(
     private readonly repositoryFactory: RepositoryFactory,
-    private readonly repositoryChangeEvent: RepositoryChangeEvent,
+    private readonly repositoryChangeEvent: RepositoryEvent,
   ) {}
 
   @Cron(CronExpression.EVERY_HOUR)

@@ -83,6 +83,7 @@ export class RepositoryService {
       {
         repository_id: repository.id,
         date: new Date(date).toISOString().slice(0, 19).replace('T', ' '),
+        reset_status: true,
       },
       manager,
     );

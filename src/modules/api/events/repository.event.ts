@@ -4,9 +4,9 @@ import { RepositoryEntity } from 'src/modules/databases/entities/repository.enti
 import { CommitService } from '../services/commit.service';
 
 @Injectable()
-export class RepositoryChangeEvent {
+export class RepositoryEvent {
   ENTITY_CHANGE_EVENT = 'repository.change.event';
-  private readonly _logger = new Logger(RepositoryChangeEvent.name);
+  private readonly _logger = new Logger(RepositoryEvent.name);
   constructor(
     private readonly eventEmitter: EventEmitter2,
     private readonly commitService: CommitService,

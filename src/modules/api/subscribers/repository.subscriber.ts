@@ -6,7 +6,7 @@ import {
   EventSubscriber,
   InsertEvent,
 } from 'typeorm';
-import { RepositoryChangeEvent } from '../events/repository.event';
+import { RepositoryEvent } from '../events/repository.event';
 import { Logger } from '@nestjs/common';
 
 @EventSubscriber()
@@ -18,7 +18,7 @@ export class RepositorySubscriber
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-    private readonly repositoryChangeEvent: RepositoryChangeEvent,
+    private readonly repositoryChangeEvent: RepositoryEvent,
   ) {
     dataSource.subscribers.push(this);
   }
