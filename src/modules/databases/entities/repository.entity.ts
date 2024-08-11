@@ -2,41 +2,50 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Commit } from './commit.entity';
+import { CommitEntity } from './commit.entity';
+import { CommitSyncSettingsEntity } from './commit-sync-setting.entity';
 
 @Entity('repositories')
-export class Repository {
+export class RepositoryEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
-  @Column({ type: 'varchar' })
-  name: string;
+  @Column({ type: 'varchar', nullable: true })
+  name?: string;
 
-  @Column({ type: 'varchar' })
-  url: string;
+  @Column({ type: 'varchar', nullable: true })
+  full_name?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  url?: string;
 
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @Column({ type: 'varchar' })
-  language: string;
+  @Column({ type: 'varchar', nullable: true })
+  language?: string;
 
-  @Column({ type: 'varchar' })
-  forks_count: string;
+  @Column({ type: 'varchar', nullable: true })
+  forks_count?: string;
 
-  @Column({ type: 'varchar' })
-  stargazers_count: string;
+  @Column({ type: 'varchar', nullable: true })
+  stargazers_count?: string;
 
-  @Column({ type: 'varchar' })
-  open_issues_count: string;
+  @Column({ type: 'varchar', nullable: true })
+  open_issues_count?: string;
 
-  @Column({ type: 'varchar' })
-  watchers_count: string;
+  @Column({ type: 'varchar', nullable: true })
+  watchers_count?: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  commit_sync_setting_id?: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -44,6 +53,13 @@ export class Repository {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToMany(() => Commit, (commit) => commit.repository)
-  commits: Relation<Commit[]>;
+  @OneToMany(() => CommitEntity, (commit) => commit.repository)
+  commits: Relation<CommitEntity[]>;
+
+  @OneToOne(
+    () => CommitSyncSettingsEntity,
+    (commit_sync_settings) => commit_sync_settings.repository,
+  )
+  @JoinColumn({ name: 'commit_sync_setting_id' })
+  commit_sync_setting: Promise<Relation<CommitSyncSettingsEntity>>;
 }
