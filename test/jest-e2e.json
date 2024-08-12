@@ -9,5 +9,9 @@
   "testPathIgnorePatterns": [
     "/node_modules/",
     "/dist/"
+  ],
+  "transformIgnorePatterns": [
+    "<rootDir>/node_modules/",
+    "<rootDir>/dist/"
   ]
 }
