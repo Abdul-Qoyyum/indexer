@@ -31,7 +31,7 @@ npm run typeorm:run-migrations (to run database migrations)
 
 Start the server
 ```angular2html
-npm run dev
+npm run start:dev
 ```
 
 Test
