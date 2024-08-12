@@ -13,7 +13,7 @@ export class IndexRepositoryDto {
 }
 
 export class ResetCommitSyncSettingsDto {
-  @ApiProperty({ example: 'chromium' })
+  @ApiProperty({ example: '2020-04-07 13:08:38' })
   @IsDate()
   @Type(() => Date)
   date: Date;

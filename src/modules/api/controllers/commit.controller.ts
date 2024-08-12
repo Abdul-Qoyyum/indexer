@@ -1,5 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CoreController } from '../core.controller';
 import { CommitService } from '../services/commit.service';
 
@@ -10,6 +10,9 @@ export class CommitController extends CoreController {
     super();
   }
 
+  @ApiOperation({
+    description: 'Api to get top (N) authors by commit count',
+  })
   @Get('get-top-authors-by-commit-count/:limit')
   async getTopAuthorsByCommitCount(
     @Param('limit', ParseIntPipe) limit: number,
@@ -27,6 +30,9 @@ export class CommitController extends CoreController {
   }
 
   @Get()
+  @ApiOperation({
+    description: 'Api to search commits by repository name',
+  })
   @ApiQuery({ name: 'repository_name', required: false, type: String })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
